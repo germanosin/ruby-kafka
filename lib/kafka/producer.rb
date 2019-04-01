@@ -335,6 +335,8 @@ module Kafka
     #
     # This method should be used when you need to batch consumed and produced messages
     # together, typically in a consume-transform-produce pattern. Thus, the specified
+    # group_id should be the same as config parameter group.id of the used
+    # consumer.
     #
     # @return [nil]
     def send_offsets_to_transaction(offsets:, group_id:)
