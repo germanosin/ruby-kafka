@@ -136,7 +136,7 @@ describe Kafka::Broker do
   end
 
   describe "#add_offsets_to_txn" do
-    it "should send offsets to the transaction" do
+    it 'sends offsets to the transaction' do
       allow(connection).to receive(:send_request)
       broker.add_offsets_to_txn(
         transactional_id: 1, producer_id: 2, producer_epoch: 3, group_id: 4
