@@ -586,7 +586,7 @@ describe ::Kafka::TransactionManager do
             error_code: 0
           )
         )
-        allow(transaction_coordinator).to receive(:txn_offset_commit).and_return(
+        expect(transaction_coordinator).to receive(:txn_offset_commit).and_return(
           Kafka::Protocol::TxnOffsetCommitResponse.new(
             error_code: 0
           )
