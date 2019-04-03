@@ -16,7 +16,7 @@ module Kafka
         TxnOffsetCommitResponse
       end
 
-      def initialize(transactional_id:, group_id:, producer_id:, producer_epoc:, offsets:)
+      def initialize(transactional_id:, group_id:, producer_id:, producer_epoch:, offsets:)
         @transactional_id = transactional_id
         @producer_id = producer_id
         @producer_epoch = producer_epoch
