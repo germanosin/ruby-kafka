@@ -325,7 +325,7 @@ describe Kafka::Producer do
   end
 
   describe "#send_offsets_to_transaction" do
-    it "should send offsets to transaction manager" do
+    it 'sends offsets to transaction manager' do
       producer.send_offsets_to_transaction(offsets: [], group_id: 1)
       expect(transaction_manager).to have_received(:send_offsets_to_txn).with(offsets: [], group_id: 1)
     end
