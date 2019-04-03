@@ -593,7 +593,7 @@ describe ::Kafka::TransactionManager do
         )
       end
 
-      it 'should notify transaction coordinator' do
+      it 'notifies transaction coordinator' do
         manager.send_offsets_to_txn(offsets: [1, 2], group_id: 1)
         expect(transaction_coordinator).to have_received(:add_offsets_to_txn)
         expect(transaction_coordinator).to have_received(:txn_offset_commit)
