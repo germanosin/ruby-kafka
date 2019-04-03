@@ -581,7 +581,7 @@ describe ::Kafka::TransactionManager do
       before do
         manager.init_transactions
         manager.begin_transaction
-        allow(transaction_coordinator).to receive(:add_offsets_to_txn).and_return(
+        expect(transaction_coordinator).to receive(:add_offsets_to_txn).and_return(
           Kafka::Protocol::AddOffsetsToTxnResponse.new(
             error_code: 0
           )
