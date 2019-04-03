@@ -573,7 +573,9 @@ describe ::Kafka::TransactionManager do
       described_class.new(
         logger: logger,
         cluster: cluster,
-        transactional: true, transactional_id: 'IDID', transactional_timeout: 600
+        transactional: true,
+        transactional_id: 'IDID',
+        transactional_timeout: 600
       )
     end
 
