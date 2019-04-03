@@ -571,7 +571,8 @@ describe ::Kafka::TransactionManager do
   describe '#send_offsets_to_txn' do
     let!(:manager) do
       described_class.new(
-        logger: logger, cluster: cluster,
+        logger: logger,
+        cluster: cluster,
         transactional: true, transactional_id: 'IDID', transactional_timeout: 600
       )
     end
