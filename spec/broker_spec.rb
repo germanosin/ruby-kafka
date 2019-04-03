@@ -148,8 +148,10 @@ describe Kafka::Broker do
   end
 
   describe "#txn_offset_commit" do
+    before do
+      allow(connection).to receive(:send_request)
+    end
     it 'commits transaction' do
-      expect(connection).to receive(:send_request)
       broker.txn_offset_commit(
         transactional_id: 1, producer_id: 2, producer_epoch: 3, group_id: 4, offsets: []
       )
