@@ -234,7 +234,7 @@ module Kafka
 
       send_response = transaction_coordinator.txn_offset_commit(
         transactional_id: @transactional_id,
-        group_id: @group_id,
+        group_id: group_id,
         producer_id: @producer_id,
         producer_epoch: @producer_epoch,
         offsets: offsets
