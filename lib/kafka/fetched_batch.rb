@@ -19,7 +19,7 @@ module Kafka
     # @return [Array<Kafka::FetchedMessage>]
     attr_accessor :messages
 
-    def initialize(topic:, partition:, highwater_mark_offset:, messages:, last_offset: nil)
+    def initialize(topic:, partition:, highwater_mark_offset:, messages:, last_offset: nil, leader_epoch: nil)
       @topic = topic
       @partition = partition
       @highwater_mark_offset = highwater_mark_offset
