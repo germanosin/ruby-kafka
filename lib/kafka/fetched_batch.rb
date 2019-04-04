@@ -13,6 +13,9 @@ module Kafka
     # @return [Integer]
     attr_reader :last_offset
 
+    # @return [Integer]
+    attr_reader :leader_epoch
+
     # @return [Integer] the offset of the most recent message in the partition.
     attr_reader :highwater_mark_offset
 
@@ -25,6 +28,7 @@ module Kafka
       @highwater_mark_offset = highwater_mark_offset
       @messages = messages
       @last_offset = last_offset
+      @leader_epoch = leader_epoch
     end
 
     def empty?
