@@ -8,10 +8,14 @@ module Kafka
     # @return [Integer] the partition number that the message was written to.
     attr_reader :partition
 
-    def initialize(message:, topic:, partition:)
+    # @return [Integer] partition leader epoch
+    attr_reader :leader_epoch
+
+    def initialize(message:, topic:, partition:, leader_epoch: nil)
       @message = message
-      @topic = topic
+      @topic = topic      
       @partition = partition
+      @leader_epoch = leader_epoch
     end
 
     # @return [String] the value of the message.
@@ -43,5 +47,6 @@ module Kafka
     def is_control_record
       @message.is_control_record
     end
+
   end
 end

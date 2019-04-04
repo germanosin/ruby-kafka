@@ -328,20 +328,33 @@ module Kafka
       @transaction_manager.abort_transaction
     end
 
-    # Sends a list of specified offsets to the consumer group coordinator, and also marks
-    # those offsets as part of the current transaction. These offsets will be considered
-    # committed only if the transaction is committed successfully. The committed offset should
-    # be the next message your application will consume, i.e. lastProcessedMessageOffset + 1.
+    # Sends batch last offset to the consumer group coordinator, and also marks
+    # this offset as part of the current transaction. This offset will be considered
+    # committed only if the transaction is committed successfully.
     #
     # This method should be used when you need to batch consumed and produced messages
     # together, typically in a consume-transform-produce pattern. Thus, the specified
-    # group_id should be the same as config parameter group.id of the used
+    # group_id should be the same as config parameter group_id of the used
     # consumer.
     #
     # @return [nil]
-    def send_offsets_to_transaction(batch:, group_id:)
+    def send_offsets_to_transaction_batch(batch:, group_id:)
       @transaction_manager.send_offsets_to_txn(offsets: {batch.topic => {batch.partition => {offset: batch.last_offset+1, leader_epoch: batch.leader_epoch}}}, group_id: group_id)
     end
+
+    # Sends message offset to the consumer group coordinator, and also marks
+    # this offset as part of the current transaction. This offset will be considered
+    # committed only if the transaction is committed successfully.
+    #
+    # This method should be used when you need to batch consumed and produced messages
+    # together, typically in a consume-transform-produce pattern. Thus, the specified
+    # group_id should be the same as config parameter group_id of the used
+    # consumer.
+    #
+    # @return [nil]
+    def send_offsets_to_transaction_message(message:, group_id:)
+      @transaction_manager.send_offsets_to_txn(offsets: {message.topic => {message.partition => {offset: message.offset+1, leader_epoch: message.leader_epoch}}}, group_id: group_id)
+    end    
 
     # Syntactic sugar to enable easier transaction usage. Do the following steps
     #
