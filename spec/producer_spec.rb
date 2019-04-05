@@ -324,10 +324,54 @@ describe Kafka::Producer do
     end
   end
 
-  describe "#send_offsets_to_transaction" do
+  describe "#send_offsets_to_transaction_batch" do
+    let(:batch) do
+      double(
+        topic: 'some_topic',
+        partition: 'some_partition',
+        last_offset: 1,
+        leader_epoch: 1
+      )
+    end
     it 'sends offsets to transaction manager' do
-      producer.send_offsets_to_transaction(offsets: [], group_id: 1)
-      expect(transaction_manager).to have_received(:send_offsets_to_txn).with(offsets: [], group_id: 1)
+      producer.send_offsets_to_transaction_batch(batch: batch, group_id: 1)
+      expect(transaction_manager).to have_received(:send_offsets_to_txn).with(
+        offsets: {
+          'some_topic' => {
+            'some_partition' => {
+              leader_epoch: 1,
+              offset: 2
+            }
+          }
+        },
+        group_id: 1
+      )
+    end
+  end
+
+  describe "#send_offsets_to_transaction_message" do
+    let(:message) do
+      double(
+        topic: 'some_topic',
+        partition: 'some_partition',
+        offset: 1,
+        leader_epoch: 1
+      )
+    end
+
+    it 'sends offsets to transaction manager' do
+      producer.send_offsets_to_transaction_message(message: message, group_id: 1)
+      expect(transaction_manager).to have_received(:send_offsets_to_txn).with(
+        offsets: {
+          'some_topic' => {
+            'some_partition' => {
+              leader_epoch: 1,
+              offset: 2
+            }
+          }
+        },
+        group_id: 1
+      )
     end
   end
 
