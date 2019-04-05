@@ -325,52 +325,62 @@ describe Kafka::Producer do
   end
 
   describe "#send_offsets_to_transaction_batch" do
+    let(:topic) { 'some_topic' }
+    let(:partition) { rand(2**31) }
+    let(:last_offset) { rand(2**31)  }
+    let(:leader_epoch) { Time.now.to_i }
+    let(:group_id) { SecureRandom.uuid }
     let(:batch) do
       double(
-        topic: 'some_topic',
-        partition: 'some_partition',
-        last_offset: 1,
-        leader_epoch: 1
+        topic: topic,
+        partition: partition,
+        last_offset: last_offset,
+        leader_epoch: leader_epoch
       )
     end
     it 'sends offsets to transaction manager' do
-      producer.send_offsets_to_transaction_batch(batch: batch, group_id: 1)
+      producer.send_offsets_to_transaction_batch(batch: batch, group_id: group_id)
       expect(transaction_manager).to have_received(:send_offsets_to_txn).with(
         offsets: {
-          'some_topic' => {
-            'some_partition' => {
-              leader_epoch: 1,
-              offset: 2
+          topic => {
+            partition => {
+              leader_epoch: leader_epoch,
+              offset: last_offset + 1
             }
           }
         },
-        group_id: 1
+        group_id: group_id
       )
     end
   end
 
   describe "#send_offsets_to_transaction_message" do
+    let(:topic) { 'some_topic' }
+    let(:partition) { rand(2**31) }
+    let(:last_offset) { rand(2**31)  }
+    let(:leader_epoch) { Time.now.to_i }
+    let(:group_id) { SecureRandom.uuid }
     let(:message) do
       double(
-        topic: 'some_topic',
-        partition: 'some_partition',
-        offset: 1,
-        leader_epoch: 1
+        topic: topic,
+        partition: partition,
+        offset: last_offset,
+        leader_epoch: leader_epoch
       )
     end
 
     it 'sends offsets to transaction manager' do
-      producer.send_offsets_to_transaction_message(message: message, group_id: 1)
+      producer.send_offsets_to_transaction_message(message: message, group_id: group_id)
       expect(transaction_manager).to have_received(:send_offsets_to_txn).with(
         offsets: {
-          'some_topic' => {
-            'some_partition' => {
-              leader_epoch: 1,
-              offset: 2
+          topic => {
+            partition => {
+              leader_epoch: leader_epoch,
+              offset: last_offset + 1
             }
           }
         },
-        group_id: 1
+        group_id: group_id
       )
     end
   end
