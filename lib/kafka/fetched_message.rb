@@ -13,7 +13,7 @@ module Kafka
 
     def initialize(message:, topic:, partition:, leader_epoch: nil)
       @message = message
-      @topic = topic      
+      @topic = topic
       @partition = partition
       @leader_epoch = leader_epoch
     end
