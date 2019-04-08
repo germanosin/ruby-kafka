@@ -91,8 +91,7 @@ module Kafka
             records << FetchedMessage.new(
               message: record,
               topic: @topic,
-              partition: @fetched_partition.partition,
-              leader_epoch: leader_epoch
+              partition: @fetched_partition.partition
             )
           end
         end
