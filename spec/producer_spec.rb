@@ -324,7 +324,7 @@ describe Kafka::Producer do
     end
   end
 
-  describe "#send_offsets_to_transaction_batch" do
+  describe "#send_offsets_to_transaction" do
     let(:topic) { 'some_topic' }
     let(:partition) { rand(2**31) }
     let(:last_offset) { rand(2**31)  }
@@ -339,38 +339,7 @@ describe Kafka::Producer do
       )
     end
     it 'sends offsets to transaction manager' do
-      producer.send_offsets_to_transaction_batch(batch: batch, group_id: group_id)
-      expect(transaction_manager).to have_received(:send_offsets_to_txn).with(
-        offsets: {
-          topic => {
-            partition => {
-              leader_epoch: leader_epoch,
-              offset: last_offset + 1
-            }
-          }
-        },
-        group_id: group_id
-      )
-    end
-  end
-
-  describe "#send_offsets_to_transaction_message" do
-    let(:topic) { 'some_topic' }
-    let(:partition) { rand(2**31) }
-    let(:last_offset) { rand(2**31)  }
-    let(:leader_epoch) { Time.now.to_i }
-    let(:group_id) { SecureRandom.uuid }
-    let(:message) do
-      double(
-        topic: topic,
-        partition: partition,
-        offset: last_offset,
-        leader_epoch: leader_epoch
-      )
-    end
-
-    it 'sends offsets to transaction manager' do
-      producer.send_offsets_to_transaction_message(message: message, group_id: group_id)
+      producer.send_offsets_to_transaction(batch: batch, group_id: group_id)
       expect(transaction_manager).to have_received(:send_offsets_to_txn).with(
         offsets: {
           topic => {
